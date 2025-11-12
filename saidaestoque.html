@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Saídas de Estoque</title>
+    <link href="style.css" rel="stylesheet">
+    <style>
+        body { padding: 24px; background:#f8f9fa; }
+        .required::after { content: "*"; color: #d00; margin-left:4px; }
+        .table-fixed { max-height: 380px; overflow:auto; display:block; }
+    </style>
+</head>
+<body>
+      <aside class="sidebar">
+    <h2>Longitec</h2>
+    <nav>
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="produtos.html">📦 Produtos</a>
+      <a href="configuracoes.html">⚙️ Configurações</a>
+      <a href="saidaestoque.html">⚙️ Saídas de Estoque</a>
+    </nav>
+    </aside>
+<div class="container">
+    <h1 class="mb-3">Saídas de Estoque</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form id="saidaForm" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label required">Tipo de saída</label>
+                    <select id="tipo" class="form-select" required>
+                        <option value="">-- selecione --</option>
+                        <option value="Venda">Venda</option>
+                        <option value="Consumo Interno">Consumo Interno</option>
+                        <option value="Perda">Perda</option>
+                        <option value="Transferência">Transferência</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label required">Data</label>
+                    <input id="data" type="date" class="form-control" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label required">Produto</label>
+                    <input id="produto" type="text" class="form-control" placeholder="Nome ou código do produto" required />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label required">Quantidade</label>
+                    <input id="quantidade" type="number" min="0.0001" step="0.0001" class="form-control" required />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Unidade</label>
+                    <input id="unidade" type="text" class="form-control" placeholder="un, kg, l..." />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label required">Responsável</label>
+                    <input id="responsavel" type="text" class="form-control" placeholder="Nome do responsável" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Motivo / Observações</label>
+                    <input id="motivo" type="text" class="form-control" placeholder="Observações ou justificativa" />
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-check form-check-inline">
+                        <input id="associaVenda" class="form-check-input" type="checkbox">
+                        <label class="form-check-label">Associar a Pedido de Venda</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input id="associaReq" class="form-check-input" type="checkbox">
+                        <label class="form-check-label">Associar a Requisição Interna</label>
+                    </div>
+                </div>
+
+                <div id="vendaGroup" class="col-md-6 d-none">
+                    <label class="form-label">Número do Pedido de Venda</label>
+                    <input id="pedidoVenda" type="text" class="form-control" placeholder="Ex: PV-000123" />
+                </div>
+
+                <div id="reqGroup" class="col-md-6 d-none">
+                    <label class="form-label">Número da Requisição Interna</label>
+                    <input id="reqInterna" type="text" class="form-control" placeholder="Ex: REQ-2025-01" />
+                </div>
+
+                <div id="transferenciaGroup" class="col-md-6 d-none">
+                    <label class="form-label">Destino (apenas para transferência)</label>
+                    <input id="destino" type="text" class="form-control" placeholder="Depósito / Filial de destino" />
+                </div>
+
+                <div class="col-12">
+                    <div class="d-flex gap-2">
+                        <button id="btnSalvar" type="submit" class="btn btn-primary">Registrar saída</button>
+                        <button id="btnLimpar" type="button" class="btn btn-outline-secondary">Limpar</button>
+                        <button id="btnExport" type="button" class="btn btn-outline-success ms-auto">Exportar CSV</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h5>Registros</h5>
+    <div class="card">
+        <div class="card-body p-2">
+            <div class="table-responsive table-fixed">
+                <table id="tabelaSaidas" class="table table-striped table-hover mb-0">
+                    <thead class="table-light position-sticky top-0">
+                        <tr>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Produto</th>
+                            <th>Qtd</th>
+                            <th>Unid</th>
+                            <th>Responsável</th>
+                            <th>Assoc.</th>
+                            <th>Destino</th>
+                            <th>Motivo</th>
+                            <th style="width:120px">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* Simple client-side logic to manage registros de saída.
+   Persistência em localStorage para desenvolvimento/prova de conceito.
+*/
+
+const LS_KEY = 'saidasEstoque_v1';
+const form = document.getElementById('saidaForm');
+const tabelaBody = document.querySelector('#tabelaSaidas tbody');
+
+const controls = {
+    tipo: document.getElementById('tipo'),
+    data: document.getElementById('data'),
+    produto: document.getElementById('produto'),
+    quantidade: document.getElementById('quantidade'),
+    unidade: document.getElementById('unidade'),
+    responsavel: document.getElementById('responsavel'),
+    motivo: document.getElementById('motivo'),
+    associaVenda: document.getElementById('associaVenda'),
+    associaReq: document.getElementById('associaReq'),
+    pedidoVenda: document.getElementById('pedidoVenda'),
+    reqInterna: document.getElementById('reqInterna'),
+    vendaGroup: document.getElementById('vendaGroup'),
+    reqGroup: document.getElementById('reqGroup'),
+    transferenciaGroup: document.getElementById('transferenciaGroup'),
+    destino: document.getElementById('destino'),
+    btnLimpar: document.getElementById('btnLimpar'),
+    btnExport: document.getElementById('btnExport'),
+};
+
+let registros = [];
+let editingId = null;
+
+function init() {
+    // set today as default date
+    if (!controls.data.value) {
+        const today = new Date().toISOString().slice(0,10);
+        controls.data.value = today;
+    }
+    // bind events
+    controls.associaVenda.addEventListener('change', e => toggleAssociacoes());
+    controls.associaReq.addEventListener('change', e => toggleAssociacoes());
+    controls.tipo.addEventListener('change', e => toggleTransferencia());
+    controls.btnLimpar.addEventListener('click', limparFormulario);
+    controls.btnExport.addEventListener('click', exportCSV);
+    form.addEventListener('submit', onSubmit);
+    load();
+    renderTabela();
+    toggleAssociacoes();
+    toggleTransferencia();
+}
+
+function toggleAssociacoes(){
+    controls.vendaGroup.classList.toggle('d-none', !controls.associaVenda.checked);
+    controls.reqGroup.classList.toggle('d-none', !controls.associaReq.checked);
+}
+function toggleTransferencia(){
+    const isTransferencia = controls.tipo.value === 'Transferência';
+    controls.transferenciaGroup.classList.toggle('d-none', !isTransferencia);
+    if (!isTransferencia) controls.destino.value = '';
+}
+
+function carregarRegistros() {
+    try {
+        const raw = localStorage.getItem(LS_KEY);
+        return raw ? JSON.parse(raw) : [];
+    } catch {
+        return [];
+    }
+}
+function salvarRegistros() {
+    localStorage.setItem(LS_KEY, JSON.stringify(registros));
+}
+
+function load() {
+    registros = carregarRegistros();
+}
+
+function validarDados(data){
+    if(!data.tipo) return 'Selecione o tipo de saída.';
+    if(!data.data) return 'Informe a data.';
+    if(!data.produto) return 'Informe o produto.';
+    if(!data.quantidade || Number(data.quantidade) <= 0) return 'Informe quantidade maior que zero.';
+    if(!data.responsavel) return 'Informe o responsável.';
+    if(data.tipo === 'Transferência' && !data.destino) return 'Informe o destino para transferência.';
+    return null;
+}
+
+function onSubmit(e){
+    e.preventDefault();
+    const entry = {
+        id: editingId || Date.now(),
+        tipo: controls.tipo.value,
+        data: controls.data.value,
+        produto: controls.produto.value.trim(),
+        quantidade: Number(controls.quantidade.value),
+        unidade: controls.unidade.value.trim(),
+        responsavel: controls.responsavel.value.trim(),
+        motivo: controls.motivo.value.trim(),
+        pedidoVenda: controls.associaVenda.checked ? controls.pedidoVenda.value.trim() : '',
+        reqInterna: controls.associaReq.checked ? controls.reqInterna.value.trim() : '',
+        destino: controls.tipo.value === 'Transferência' ? controls.destino.value.trim() : ''
+    };
+
+    const err = validarDados(entry);
+    if(err){ alert(err); return; }
+
+    if(editingId){
+        const idx = registros.findIndex(r => r.id === editingId);
+        if(idx >= 0) registros[idx] = entry;
+        editingId = null;
+        controls.btnSalvar && (document.getElementById('btnSalvar').textContent = 'Registrar saída');
+    } else {
+        registros.unshift(entry); // show newest first
+    }
+
+    salvarRegistros();
+    renderTabela();
+    limparFormulario();
+}
+
+function limparFormulario(){
+    form.reset();
+    editingId = null;
+    const today = new Date().toISOString().slice(0,10);
+    controls.data.value = today;
+    toggleAssociacoes();
+    toggleTransferencia();
+}
+
+function renderTabela(){
+    tabelaBody.innerHTML = '';
+    if(registros.length === 0){
+        tabelaBody.innerHTML = '<tr><td colspan="10" class="text-center small text-muted py-3">Nenhum registro</td></tr>';
+        return;
+    }
+
+    for(const r of registros){
+        const tr = document.createElement('tr');
+
+        const assoc = [
+            r.pedidoVenda ? `PV: ${r.pedidoVenda}` : '',
+            r.reqInterna ? `REQ: ${r.reqInterna}` : ''
+        ].filter(Boolean).join(' | ');
+
+        tr.innerHTML = `
+            <td>${r.data}</td>
+            <td>${r.tipo}</td>
+            <td>${escapeHtml(r.produto)}</td>
+            <td>${r.quantidade}</td>
+            <td>${escapeHtml(r.unidade || '')}</td>
+            <td>${escapeHtml(r.responsavel)}</td>
+            <td>${escapeHtml(assoc)}</td>
+            <td>${escapeHtml(r.destino || '')}</td>
+            <td>${escapeHtml(r.motivo || '')}</td>
+            <td>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-sm btn-outline-primary btn-edit" data-id="${r.id}">Editar</button>
+                    <button class="btn btn-sm btn-outline-danger btn-del" data-id="${r.id}">Excluir</button>
+                </div>
+            </td>
+        `;
+        tabelaBody.appendChild(tr);
+    }
+
+    // bind action buttons
+    document.querySelectorAll('.btn-del').forEach(b=>{
+        b.addEventListener('click', ()=> {
+            const id = Number(b.getAttribute('data-id'));
+            if(confirm('Excluir esse registro?')) {
+                registros = registros.filter(x => x.id !== id);
+                salvarRegistros();
+                renderTabela();
+            }
+        });
+    });
+    document.querySelectorAll('.btn-edit').forEach(b=>{
+        b.addEventListener('click', ()=> {
+            const id = Number(b.getAttribute('data-id'));
+            const item = registros.find(x => x.id === id);
+            if(!item) return;
+            editingId = id;
+            controls.tipo.value = item.tipo;
+            controls.data.value = item.data;
+            controls.produto.value = item.produto;
+            controls.quantidade.value = item.quantidade;
+            controls.unidade.value = item.unidade;
+            controls.responsavel.value = item.responsavel;
+            controls.motivo.value = item.motivo;
+            controls.associaVenda.checked = !!item.pedidoVenda;
+            controls.associaReq.checked = !!item.reqInterna;
+            controls.pedidoVenda.value = item.pedidoVenda || '';
+            controls.reqInterna.value = item.reqInterna || '';
+            controls.destino.value = item.destino || '';
+            toggleAssociacoes();
+            toggleTransferencia();
+            document.getElementById('btnSalvar').textContent = 'Salvar alterações';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+}
+
+function exportCSV(){
+    if(registros.length === 0){ alert('Sem registros para exportar.'); return; }
+    const header = ['id','data','tipo','produto','quantidade','unidade','responsavel','pedidoVenda','reqInterna','destino','motivo'];
+    const rows = registros.map(r => header.map(h => csvEscape(String(r[h] ?? ''))).join(','));
+    const csv = [header.join(','), ...rows].join('\r\n');
+    const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `saidas_estoque_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function csvEscape(v){
+    if(v == null) return '';
+    if(v.includes('"') || v.includes(',') || v.includes('\n')) return `"${v.replace(/"/g,'""')}"`;
+    return v;
+}
+
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+init();
+</script>
+</body>

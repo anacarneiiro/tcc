@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longitec - Produtos</title>
+  <link rel="stylesheet" href="TCC-final/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>Longitec</h2>
+    <nav>
+  <a href="TCC-final/dashboard.html">🏠 Dashboard</a>
+  <a href="TCC-final/produtos.html">📦 Produtos</a>
+  <a href="TCC-final/configuracoes.html">⚙️ Configurações</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header>
+      <h1>Gerenciar Produtos</h1>
+    </header>
+
+    <section class="add-form">
+      <input type="text" placeholder="Nome do produto">
+      <input type="number" placeholder="Qtd. em estoque">
+      <input type="number" placeholder="Preço (R$)">
+      <button>Adicionar</button>
+    </section>
+
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Estoque</th>
+          <th>Preço (R$)</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linhas serão adicionadas dinamicamente -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    const addBtn = document.querySelector('.add-form button');
+    const inputs = document.querySelectorAll('.add-form input');
+    const tableBody = document.querySelector('.product-table tbody');
+
+    // Carrega produtos salvos do localStorage
+    let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+    let id = produtos.length ? Math.max(...produtos.map(p => p.id)) + 1 : 1;
+
+    // Função para renderizar tabela
+    function renderTabela() {
+      tableBody.innerHTML = "";
+      produtos.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.id}</td>
+          <td>${p.nome}</td>
+          <td>${p.qtd}</td>
+          <td>${parseFloat(p.preco).toFixed(2)}</td>
+          <td><button class="delete-btn" data-id="${p.id}">🗑️ Excluir</button></td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      // Adiciona eventos de exclusão
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idRemover = parseInt(e.target.dataset.id);
+          produtos = produtos.filter(prod => prod.id !== idRemover);
+          localStorage.setItem('produtos', JSON.stringify(produtos));
+          renderTabela();
+        });
+      });
+    }
+
+    // Renderiza ao carregar a página
+    renderTabela();
+
+    // Adiciona novo produto
+    addBtn.addEventListener('click', () => {
+      const nome = inputs[0].value.trim();
+      const qtd = inputs[1].value.trim();
+      const preco = inputs[2].value.trim();
+
+      if (!nome || !qtd || !preco) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      const novoProduto = {
+        id: id++,
+        nome,
+        qtd: parseInt(qtd),
+        preco: parseFloat(preco)
+      };
+
+      produtos.push(novoProduto);
+      localStorage.setItem('produtos', JSON.stringify(produtos));
+      renderTabela();
+      inputs.forEach(input => input.value = "");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longitec - Dashboard</title>
+  <link rel="stylesheet" href="TCC-final/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>Longitec</h2>
+    <nav>
+      <a href="TCC-final/dashboard.html">🏠 Dashboard</a>
+      <a href="TCC-final/produtos.html">📦 Produtos</a>
+      <a href="TCC-final/configuracoes.html">⚙️ Configurações</a>
+      <a href="TCC-final/saidaestoque.html">⚙️ Saídas de Estoque</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header>
+      <h1>Dashboard</h1>
+      <p>Bem-vindo(a) ao painel de controle de estoque da Longitec.</p>
+    </header>
+
+    <section class="cards">
+      <div class="card">
+        <h3>Total de Produtos</h3>
+        <p id="total-produtos">0</p>
+      </div>
+      <div class="card">
+        <h3>Estoque Baixo</h3>
+        <p>8 Itens</p>
+      </div>
+      <div class="card">
+        <h3>Última Atualização</h3>
+        <p>05/11/2025</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Atualiza o total de produtos no dashboard
+    const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+    document.getElementById('total-produtos').textContent = produtos.length;
+  </script>
+  <script>
+    // Define dinamicamente o item ativo na sidebar com base no arquivo atual
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('aside.sidebar nav a');
+      const file = location.pathname.split('/').pop() || 'index.html';
+      navLinks.forEach(a => {
+        const hrefFile = a.getAttribute('href').split('/').pop();
+        if (hrefFile === file) a.classList.add('active');
+        else a.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>

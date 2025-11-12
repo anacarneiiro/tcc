@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Configurações — App de Estoque</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        :root{
+            --bg:#f6f8fa; --card:#fff; --text:#222; --accent:#0b74de; --muted:#666;
+            --danger:#d64545;
+        }
+        html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+        .container{max-width:980px;margin:32px auto;padding:20px}
+        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+        h1{font-size:20px;margin:0}
+        .card{background:var(--card);border-radius:8px;padding:18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+        .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+        label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
+        input[type="text"],input[type="number"],select,textarea{width:100%;padding:8px;border:1px solid #e4e7eb;border-radius:6px;font-size:14px;background:#fff}
+        .full{grid-column:1/-1}
+        .row{display:flex;gap:8px;align-items:center}
+        .switch{display:inline-flex;align-items:center;gap:8px}
+        .actions{display:flex;gap:8px;justify-content:flex-end}
+        button{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+        button.ghost{background:transparent;color:var(--accent);border:1px solid #dbe9fb}
+        button.warn{background:var(--danger)}
+        small{color:var(--muted)}
+        .help{font-size:13px;color:var(--muted);margin-top:6px}
+        footer{margin-top:18px;text-align:right}
+        @media (max-width:760px){.grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>Longitec</h2>
+        <nav>
+            <a href="dashboard.html">🏠 Dashboard</a>
+            <a href="produtos.html">📦 Produtos</a>
+            <a href="configuracoes.html">⚙️ Configurações</a>
+             <a href="saidaestoque.html">⚙️ Saídas de Estoque</a>
+        </nav>
+  </aside>
+<div class="container" role="main">
+    <header>
+        <h1>Configurações do App de Estoque</h1>
+        <div><small class="help">Ajuste preferências gerais, notificações e backup</small></div>
+    </header>
+
+    <form id="settingsForm" class="card" autocomplete="off" aria-label="Configurações do sistema">
+        <section aria-labelledby="empresa">
+            <h2 id="empresa" style="margin:0 0 10px 0;font-size:16px">Informações da empresa</h2>
+            <div class="grid">
+                <div>
+                    <label for="companyName">Nome da empresa</label>
+                    <input id="companyName" name="companyName" type="text" placeholder="Ex: Loja ABC" />
+                </div>
+                <div>
+                    <label for="companyCNPJ">CNPJ / ID</label>
+                    <input id="companyCNPJ" name="companyCNPJ" type="text" placeholder="Opcional" />
+                </div>
+
+                <div class="full">
+                    <label for="companyAddress">Endereço</label>
+                    <input id="companyAddress" name="companyAddress" type="text" placeholder="Rua, número, cidade" />
+                </div>
+            </div>
+        </section>
+    </form>
+
+    <div class="card">
+        <h2 style="margin:0 0 10px 0;font-size:16px">Preferências do sistema</h2>
+        <div class="grid">
+            <div>
+                <label for="currency">Moeda padrão</label>
+                <select id="currency" name="currency">
+                    <option value="BRL">BRL — Real (R$)</option>
+                    <option value="USD">USD — Dólar (US$)</option>
+                    <option value="EUR">EUR — Euro (€)</option>
+                </select>
+            </div>
+            <div>
+                <label for="lang">Idioma</label>
+                <select id="lang" name="lang">
+                    <option value="pt-BR">Português (Brasil)</option>
+                    <option value="en-US">English (US)</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="defaultStockUnit">Unidade padrão</label>
+                <input id="defaultStockUnit" name="defaultStockUnit" type="text" placeholder="Ex: un, kg, ml" />
+            </div>
+            <div>
+                <label for="lowStockThreshold">Alerta de estoque baixo (por item)</label>
+                <input id="lowStockThreshold" name="lowStockThreshold" type="number" min="0" step="1" />
+            </div>
+
+            <div class="full">
+                <label for="barcodePrefix">Prefixo de código de barras (opcional)</label>
+                <input id="barcodePrefix" name="barcodePrefix" type="text" placeholder="Ex: 789" />
+                <small class="help">Prefixo que será adicionado ao gerar códigos de barras.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 style="margin:0 0 10px 0;font-size:16px">Notificações</h2>
+        <div class="grid">
+            <div>
+                <label>Enviar e-mail</label>
+                <div class="row">
+                    <label class="switch"><input id="notifyEmail" type="checkbox" /><span>Ativado</span></label>
+                    <small class="help">Enviar notificações por e-mail sobre estoque baixo e pedidos.</small>
+                </div>
+            </div>
+            <div>
+                <label>Enviar SMS</label>
+                <div class="row">
+                    <label class="switch"><input id="notifySMS" type="checkbox" /><span>Ativado</span></label>
+                    <small class="help">Custo extra pode ser aplicado.</small>
+                </div>
+            </div>
+            <div class="full">
+                <label for="notificationEmail">E-mail para notificações</label>
+                <input id="notificationEmail" type="text" placeholder="seu@exemplo.com" />
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 style="margin:0 0 10px 0;font-size:16px">Backup e restauração</h2>
+        <div class="grid">
+            <div class="full">
+                <small class="help">Faça backup das configurações locais ou importe um arquivo JSON.</small>
+            </div>
+            <div>
+                <button id="exportBtn" type="button">Exportar configurações</button>
+            </div>
+            <div>
+                <label for="importFile">Importar</label>
+                <input id="importFile" type="file" accept=".json" />
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 style="margin:0 0 10px 0;font-size:16px">Aparência</h2>
+        <div class="grid">
+            <div>
+                <label for="theme">Tema</label>
+                <select id="theme">
+                    <option value="system">Padrão do sistema</option>
+                    <option value="light">Claro</option>
+                    <option value="dark">Escuro</option>
+                </select>
+            </div>
+            <div>
+                <label for="compactMode">Modo compacto</label>
+                <div class="row"><label class="switch"><input id="compactMode" type="checkbox" /><span>Ativado</span></label></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="card actions" aria-hidden="false">
+        <div style="flex:1;text-align:left">
+            <button id="resetBtn" class="ghost" type="button">Redefinir para padrão</button>
+        </div>
+        <div>
+            <button id="saveBtn" type="button">Salvar</button>
+            <button id="cancelBtn" class="ghost" type="button">Cancelar</button>
+        </div>
+    </footer>
+</div>
+
+<script>
+(function(){
+    const defaultSettings = {
+        companyName: "",
+        companyCNPJ: "",
+        companyAddress: "",
+        currency: "BRL",
+        lang: "pt-BR",
+        defaultStockUnit: "un",
+        lowStockThreshold: 5,
+        barcodePrefix: "",
+        notifyEmail: false,
+        notifySMS: false,
+        notificationEmail: "",
+        theme: "system",
+        compactMode: false
+    };
+
+    const $ = id => document.getElementById(id);
+
+    function loadSettings(){
+        const s = JSON.parse(localStorage.getItem('inventorySettings') || 'null') || defaultSettings;
+        $('companyName').value = s.companyName || "";
+        $('companyCNPJ').value = s.companyCNPJ || "";
+        $('companyAddress').value = s.companyAddress || "";
+        $('currency').value = s.currency || defaultSettings.currency;
+        $('lang').value = s.lang || defaultSettings.lang;
+        $('defaultStockUnit').value = s.defaultStockUnit || defaultSettings.defaultStockUnit;
+        $('lowStockThreshold').value = s.lowStockThreshold ?? defaultSettings.lowStockThreshold;
+        $('barcodePrefix').value = s.barcodePrefix || "";
+        $('notifyEmail').checked = !!s.notifyEmail;
+        $('notifySMS').checked = !!s.notifySMS;
+        $('notificationEmail').value = s.notificationEmail || "";
+        $('theme').value = s.theme || defaultSettings.theme;
+        $('compactMode').checked = !!s.compactMode;
+    }
+
+    function gatherSettings(){
+        return {
+            companyName: $('companyName').value.trim(),
+            companyCNPJ: $('companyCNPJ').value.trim(),
+            companyAddress: $('companyAddress').value.trim(),
+            currency: $('currency').value,
+            lang: $('lang').value,
+            defaultStockUnit: $('defaultStockUnit').value.trim() || defaultSettings.defaultStockUnit,
+            lowStockThreshold: Math.max(0, parseInt($('lowStockThreshold').value || defaultSettings.lowStockThreshold)),
+            barcodePrefix: $('barcodePrefix').value.trim(),
+            notifyEmail: $('notifyEmail').checked,
+            notifySMS: $('notifySMS').checked,
+            notificationEmail: $('notificationEmail').value.trim(),
+            theme: $('theme').value,
+            compactMode: $('compactMode').checked
+        };
+    }
+
+    function saveSettings(){
+        const settings = gatherSettings();
+        // basic validation
+        if(settings.notifyEmail && !settings.notificationEmail){
+            alert('Ativee um e-mail para notificações ou desative "Enviar e-mail".');
+            return;
+        }
+        localStorage.setItem('inventorySettings', JSON.stringify(settings));
+        alert('Configurações salvas.');
+    }
+
+    function resetDefaults(){
+        if(!confirm('Redefinir todas as configurações para o padrão?')) return;
+        localStorage.removeItem('inventorySettings');
+        loadSettings();
+        alert('Padrões restaurados.');
+    }
+
+    function exportSettings(){
+        const data = localStorage.getItem('inventorySettings') || JSON.stringify(defaultSettings);
+        const blob = new Blob([data], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const now = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+        a.href = url;
+        a.download = `inventory-settings-${now}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    }
+
+    function importSettings(file){
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            try{
+                const obj = JSON.parse(reader.result);
+                // minimal shape check
+                if(typeof obj !== 'object') throw new Error('Arquivo inválido');
+                localStorage.setItem('inventorySettings', JSON.stringify(Object.assign({}, defaultSettings, obj)));
+                loadSettings();
+                alert('Configurações importadas com sucesso.');
+            }catch(e){
+                alert('Falha ao importar: arquivo JSON inválido.');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // events
+    document.addEventListener('DOMContentLoaded', loadSettings);
+    $('saveBtn').addEventListener('click', saveSettings);
+    $('resetBtn').addEventListener('click', resetDefaults);
+    $('cancelBtn').addEventListener('click', loadSettings);
+    $('exportBtn').addEventListener('click', exportSettings);
+    $('importFile').addEventListener('change', e => {
+        if(e.target.files && e.target.files[0]) importSettings(e.target.files[0]);
+        e.target.value = '';
+    });
+
+    // apply theme quickly
+    $('theme').addEventListener('change', () => {
+        const t = $('theme').value;
+        if(t === 'dark') document.documentElement.style.filter = 'invert(0)'; // placeholder: integrate real theme switch
+    });
+})();
+</script>
+<script>
+    // Define dinamicamente o item ativo na sidebar com base no arquivo atual
+    document.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll('aside.sidebar nav a');
+        const file = location.pathname.split('/').pop() || 'index.html';
+        navLinks.forEach(a => {
+            const hrefFile = a.getAttribute('href').split('/').pop();
+            if (hrefFile === file) a.classList.add('active');
+            else a.classList.remove('active');
+        });
+    });
+</script>
+</body>
+</html>
