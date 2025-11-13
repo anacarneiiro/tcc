@@ -1,110 +1,66 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Longitec - Produtos</title>
-  <link rel="stylesheet" href="TCC-final/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Produtos - Longitec</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <aside class="sidebar">
-    <h2>Longitec</h2>
-    <nav>
-  <a href="TCC-final/dashboard.html">🏠 Dashboard</a>
-  <a href="TCC-final/produtos.html">📦 Produtos</a>
-  <a href="TCC-final/configuracoes.html">⚙️ Configurações</a>
-    </nav>
-  </aside>
+  <header class="site-header small">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo">📊</div>
+        <div class="brand-title">Longitec</div>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html">Início</a>
+        <a href="produtos.html" class="active">Produtos</a>
+        <a href="relatorios.html">Relatórios</a>
+      </nav>
+    </div>
+  </header>
 
-  <main class="main-content">
-    <header>
-      <h1>Gerenciar Produtos</h1>
-    </header>
+  <main class="container">
+    <div class="panel">
+      <h2>Produtos</h2>
 
-    <section class="add-form">
-      <input type="text" placeholder="Nome do produto">
-      <input type="number" placeholder="Qtd. em estoque">
-      <input type="number" placeholder="Preço (R$)">
-      <button>Adicionar</button>
-    </section>
+      <form id="formProduto" class="form-inline">
+        <input id="produtoSku" placeholder="SKU" required>
+        <input id="produtoNome" placeholder="Nome do produto" required>
+        <input id="produtoQtd" type="number" placeholder="Quantidade" required>
+        <input id="produtoPreco" type="number" step="0.01" placeholder="Preço (R$)" required>
+        <button class="btn btn-primary" type="submit">Salvar</button>
+      </form>
 
-    <table class="product-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Estoque</th>
-          <th>Preço (R$)</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Linhas serão adicionadas dinamicamente -->
-      </tbody>
-    </table>
+      <div class="table-wrapper">
+        <table id="tabelaProdutos" class="table">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Produto</th>
+              <th>Qtde</th>
+              <th>Preço</th>
+              <th>Total</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Botão para gerar relatório -->
+      <div class="relatorio-btn">
+        <button class="btn secondary" id="btnRelatorio">📊 Fazer Relatório</button>
+      </div>
+    </div>
   </main>
 
-  <script>
-    const addBtn = document.querySelector('.add-form button');
-    const inputs = document.querySelectorAll('.add-form input');
-    const tableBody = document.querySelector('.product-table tbody');
+  <footer class="site-footer">
+    <div class="container footer-inner">© 2025 Longitec</div>
+  </footer>
 
-    // Carrega produtos salvos do localStorage
-    let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
-    let id = produtos.length ? Math.max(...produtos.map(p => p.id)) + 1 : 1;
-
-    // Função para renderizar tabela
-    function renderTabela() {
-      tableBody.innerHTML = "";
-      produtos.forEach(p => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${p.id}</td>
-          <td>${p.nome}</td>
-          <td>${p.qtd}</td>
-          <td>${parseFloat(p.preco).toFixed(2)}</td>
-          <td><button class="delete-btn" data-id="${p.id}">🗑️ Excluir</button></td>
-        `;
-        tableBody.appendChild(tr);
-      });
-
-      // Adiciona eventos de exclusão
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const idRemover = parseInt(e.target.dataset.id);
-          produtos = produtos.filter(prod => prod.id !== idRemover);
-          localStorage.setItem('produtos', JSON.stringify(produtos));
-          renderTabela();
-        });
-      });
-    }
-
-    // Renderiza ao carregar a página
-    renderTabela();
-
-    // Adiciona novo produto
-    addBtn.addEventListener('click', () => {
-      const nome = inputs[0].value.trim();
-      const qtd = inputs[1].value.trim();
-      const preco = inputs[2].value.trim();
-
-      if (!nome || !qtd || !preco) {
-        alert("Preencha todos os campos!");
-        return;
-      }
-
-      const novoProduto = {
-        id: id++,
-        nome,
-        qtd: parseInt(qtd),
-        preco: parseFloat(preco)
-      };
-
-      produtos.push(novoProduto);
-      localStorage.setItem('produtos', JSON.stringify(produtos));
-      renderTabela();
-      inputs.forEach(input => input.value = "");
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+

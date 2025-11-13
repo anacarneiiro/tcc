@@ -1,328 +1,75 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LongiTec | Controle de Estoque e Vendas</title>
-  <style>
-    /* ---------- RESET E VARIÁVEIS ---------- */
-    :root {
-      --primary: #0057b8;
-      --secondary: #0d1b2a;
-      --light: #f5f6fa;
-      --white: #fff;
-      --danger: #d90429;
-      --success: #00b894;
-      --gray: #a4b0be;
-    }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ControleApp - Início</title>
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: var(--light);
-      color: var(--secondary);
-    }
-
-    /* ---------- CABEÇALHO ---------- */
-    header {
-      background-color: var(--primary);
-      color: var(--white);
-      padding: 15px 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    header h1 {
-      font-size: 1.6rem;
-      letter-spacing: 1px;
-    }
-
-    nav a {
-      color: var(--white);
-      text-decoration: none;
-      margin-left: 20px;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: #eaeaea;
-    }
-
-    /* ---------- CONTAINER ---------- */
-    .container {
-      padding: 40px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      color: var(--primary);
-      font-size: 1.4rem;
-    }
-
-    /* ---------- BOTÕES ---------- */
-    .btn {
-      background-color: var(--primary);
-      color: var(--white);
-      border: none;
-      padding: 10px 18px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background-color: #004494;
-    }
-
-    .btn-danger {
-      background-color: var(--danger);
-    }
-
-    .btn-success {
-      background-color: var(--success);
-    }
-
-    /* ---------- FORMULÁRIOS ---------- */
-    form {
-      background-color: var(--white);
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-      margin-bottom: 30px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #dcdde1;
-      border-radius: 5px;
-      font-size: 0.95rem;
-    }
-
-    /* ---------- TABELA ---------- */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: var(--white);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    th, td {
-      padding: 14px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
-
-    th {
-      background-color: var(--primary);
-      color: var(--white);
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
-    }
-
-    tr:hover {
-      background-color: #f1f2f6;
-    }
-
-    /* ---------- RODAPÉ ---------- */
-    footer {
-      background-color: var(--secondary);
-      color: var(--white);
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-    }
-
-    /* ---------- RESPONSIVIDADE ---------- */
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        text-align: center;
-      }
-      nav a {
-        margin: 10px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <header>
-    <h1>LongiTec</h1>
-    <nav>
-      <a href="#estoque">Estoque</a>
-      <a href="#vendas">Vendas</a>
-      <a href="#relatorios">Relatórios</a>
-    </nav>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo">📊</div>
+        <div class="brand-title">ControleApp</div>
+      </div>
+
+      <nav class="main-nav">
+        <a href="index.html">Início</a>
+        <a href="#">Entrar</a>
+        <a href="#">Cadastrar</a>
+        <a href="#">Produtos</a>
+        <a href="#">Relatórios</a>
+      </nav>
+    </div>
   </header>
 
-  <div class="container">
+  <main class="container hero">
+    <div class="hero-left">
+      <div class="badge">Planos a partir de R$55</div>
+      <h1>Gestão inteligente para vender mais e se preocupar menos 🚀</h1>
+      <p class="lead">Automatize seu estoque, registre produtos e gere relatórios profissionais em segundos.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#">Entrar</a>
+        <a class="btn btn-outline" href="#">Cadastrar-se</a>
+      </div>
+    </div>
 
-    <section id="estoque">
-      <h2>Controle de Estoque</h2>
-      <form id="form-produto">
-        <label>Nome do Produto:</label>
-        <input type="text" id="produto" required>
+    <div class="hero-right">
+      <div class="card-value">
+        <div class="small muted">Valor em estoque</div>
+        <div class="big">R$ <span id="widgetStock">0.00</span></div>
+      </div>
+    </div>
+  </main>
 
-        <label>Categoria:</label>
-        <input type="text" id="categoria" required>
+  <section class="container features">
+    <h3>Por que escolher o ControleApp?</h3>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h4>Controle de Estoque</h4>
+        <p>Gerencie seus produtos facilmente.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Gestão de Vendas</h4>
+        <p>Registre vendas e acompanhe desempenho.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Relatórios</h4>
+        <p>Exporte relatórios em PDF e Word.</p>
+      </div>
+    </div>
+  </section>
 
-        <label>Quantidade:</label>
-        <input type="number" id="quantidade" min="1" required>
-
-        <label>Preço de Venda (R$):</label>
-        <input type="number" id="preco" min="0" step="0.01" required>
-
-        <button type="submit" class="btn">Adicionar Produto</button>
-      </form>
-
-      <table id="tabela-estoque">
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Categoria</th>
-            <th>Qtd</th>
-            <th>Preço (R$)</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
-
-    <section id="vendas" style="margin-top:60px;">
-      <h2>Registro de Vendas</h2>
-      <form id="form-venda">
-        <label>Produto:</label>
-        <select id="venda-produto"></select>
-
-        <label>Quantidade Vendida:</label>
-        <input type="number" id="venda-quantidade" min="1" required>
-
-        <button type="submit" class="btn-success btn">Registrar Venda</button>
-      </form>
-
-      <table id="tabela-vendas">
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Total (R$)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
-
-  </div>
-
-  <footer>
-    <p>© 2025 LongiTec — Sistema de Controle de Estoque e Vendas</p>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>© 2025 ControleApp • suporte@controleapp.com</div>
+    </div>
   </footer>
 
-  <script>
-    const formProduto = document.getElementById("form-produto");
-    const tabelaEstoque = document.querySelector("#tabela-estoque tbody");
-    const formVenda = document.getElementById("form-venda");
-    const selectVenda = document.getElementById("venda-produto");
-    const tabelaVendas = document.querySelector("#tabela-vendas tbody");
-
-    let estoque = [];
-
-    formProduto.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const produto = {
-        nome: document.getElementById("produto").value,
-        categoria: document.getElementById("categoria").value,
-        quantidade: parseInt(document.getElementById("quantidade").value),
-        preco: parseFloat(document.getElementById("preco").value)
-      };
-
-      estoque.push(produto);
-      atualizarTabela();
-      atualizarSelectVendas();
-      formProduto.reset();
-    });
-
-    function atualizarTabela() {
-      tabelaEstoque.innerHTML = "";
-      estoque.forEach((item, i) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${item.nome}</td>
-          <td>${item.categoria}</td>
-          <td>${item.quantidade}</td>
-          <td>${item.preco.toFixed(2)}</td>
-          <td>
-            <button class="btn-danger btn" onclick="removerProduto(${i})">Excluir</button>
-          </td>
-        `;
-        tabelaEstoque.appendChild(tr);
-      });
-    }
-
-    function removerProduto(i) {
-      estoque.splice(i, 1);
-      atualizarTabela();
-      atualizarSelectVendas();
-    }
-
-    function atualizarSelectVendas() {
-      selectVenda.innerHTML = "";
-      estoque.forEach((item, i) => {
-        const option = document.createElement("option");
-        option.value = i;
-        option.textContent = item.nome;
-        selectVenda.appendChild(option);
-      });
-    }
-
-    formVenda.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const i = selectVenda.value;
-      const qtdVendida = parseInt(document.getElementById("venda-quantidade").value);
-
-      if (estoque[i].quantidade >= qtdVendida) {
-        estoque[i].quantidade -= qtdVendida;
-        const total = qtdVendida * estoque[i].preco;
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${estoque[i].nome}</td>
-          <td>${qtdVendida}</td>
-          <td>${total.toFixed(2)}</td>
-        `;
-        tabelaVendas.appendChild(tr);
-
-        atualizarTabela();
-      } else {
-        alert("Estoque insuficiente!");
-      }
-
-      formVenda.reset();
-    });
-  </script>
+  <script src="js/script.js"></script>
 </body>
 </html>

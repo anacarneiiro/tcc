@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro - ControleApp</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header small">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo">📊</div>
+        <div class="brand-title">ControleApp</div>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html">Início</a>
+        <a href="login.html">Entrar</a>
+        <a href="cadastro.html" class="active">Cadastrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container center">
+    <div class="card cadastro-container">
+      <h2>Cadastrar Empresa / Usuário</h2>
+      <form id="cadForm">
+        <label>Nome</label>
+        <input id="cadName" type="text" required>
+        <label>Email</label>
+        <input id="cadEmail" type="email" required>
+        <label>Senha</label>
+        <input id="cadPassword" type="password" required>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Criar conta</button>
+        </div>
+      </form>
+      <p class="muted">Já tem conta? <a href="login.html">Entrar</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">© 2025 ControleApp</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

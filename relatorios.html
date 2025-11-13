@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relatórios - Longitec</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ Bibliotecas para exportar PDF e Word -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.2/docx.min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo">📊</div>
+        <div class="brand-title">Longitec</div>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html">Início</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="relatorios.html" class="active">Relatórios</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="panel">
+      <h2>Relatório de Produtos 📋</h2>
+      <div id="reportContent" class="report-content">
+        <!-- A tabela será preenchida automaticamente via script.js -->
+      </div>
+
+      <div class="export-buttons">
+        <button class="btn primary" onclick="exportPDF()">📄 Exportar PDF</button>
+        <button class="btn secondary" onclick="exportWord()">📝 Exportar Word</button>
+      </div>
+
+      <a href="produtos.html" class="btn">⬅️ Voltar para produtos</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">© 2025 Longitec</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
