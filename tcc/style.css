@@ -1,0 +1,177 @@
+/* === LONGITEC STYLE === */
+/* Cores principais */
+:root {
+  --cor-primaria: #0077ff;
+  --cor-secundaria: #00c6ff;
+  --cor-fundo: #f4f8fb;
+  --cor-texto: #222;
+  --cor-painel: #fff;
+  --cor-borda: #dce3eb;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+body {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabeçalho */
+.site-header {
+  background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+  color: #fff;
+  padding: 16px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.header-inner {
+  width: 90%;
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.main-nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 16px;
+  font-weight: 500;
+  transition: opacity 0.3s;
+}
+
+.main-nav a:hover {
+  opacity: 0.8;
+}
+
+.main-nav a.active {
+  border-bottom: 2px solid #fff;
+}
+
+/* Painel */
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 24px auto;
+  flex: 1;
+}
+
+.panel {
+  background: var(--cor-painel);
+  border: 1px solid var(--cor-borda);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.panel:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+
+/* Títulos */
+h1, h2 {
+  color: var(--cor-primaria);
+  margin-bottom: 16px;
+}
+
+/* Botões */
+.btn {
+  display: inline-block;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: var(--cor-primaria);
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: var(--cor-secundaria);
+}
+
+.btn.secondary {
+  background: #666;
+}
+
+.btn.secondary:hover {
+  background: #444;
+}
+
+/* Inputs e tabelas */
+input, select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--cor-borda);
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+th {
+  background: var(--cor-primaria);
+  color: #fff;
+}
+
+tr:hover {
+  background: #eef6ff;
+}
+
+/* Rodapé */
+.site-footer {
+  background: #fff;
+  color: #777;
+  text-align: center;
+  padding: 14px 0;
+  border-top: 1px solid var(--cor-borda);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .header-inner, .panel {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .main-nav a {
+    margin: 8px 6px;
+    display: inline-block;
+  }
+
+  table, th, td {
+    font-size: 14px;
+  }
+}

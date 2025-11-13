@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Produtos - Longitec</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header small">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo">📊</div>
+        <div class="brand-title">Longitec</div>
+      </div>
+      <nav class="main-nav">
+       <a href="index.html">🏠 Início</a>
+       <a href="produtos.html">📦 Produtos</a>
+       <a href="relatorios.html">📊 Relatórios</a>
+       <a href="login.html">🔐 Login</a>
+       <a href="cadastro.html">📝 Cadastro</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="panel">
+      <h2>Produtos</h2>
+
+      <form id="formProduto" class="form-inline">
+        <input id="produtoSku" placeholder="SKU" required>
+        <input id="produtoNome" placeholder="Nome do produto" required>
+        <input id="produtoQtd" type="number" placeholder="Quantidade" required>
+        <input id="produtoPreco" type="number" step="0.01" placeholder="Preço (R$)" required>
+        <button class="btn btn-primary" type="submit">Salvar</button>
+      </form>
+
+      <div class="table-wrapper">
+        <table id="tabelaProdutos" class="table">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Produto</th>
+              <th>Qtde</th>
+              <th>Preço</th>
+              <th>Total</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Botão para gerar relatório -->
+      <div class="relatorio-btn">
+        <button class="btn secondary" id="btnRelatorio">📊 Fazer Relatório</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">© 2025 Longitec</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
